@@ -3,8 +3,9 @@ import jwt from "jsonwebtoken";
 
 export interface AuthRequest extends Request {
   user?: {
-    sub: string;    // userId
+    sub: string;
     email?: string;
+    name?: string;
     role?: string;
   };
 }
@@ -29,7 +30,8 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
       req.user = {
         sub: decoded.sub || "",
         email: decoded.email,
-        role: decoded.role
+        role: decoded.role,
+        name: decoded.name,
       };
   
       next();
