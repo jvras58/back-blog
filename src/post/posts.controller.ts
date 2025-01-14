@@ -38,17 +38,25 @@ export async function createPost(req: AuthRequest, res: Response) {
     }
   }
 
-export async function getPosts(req: AuthRequest, res: Response) {
-  try {
-    const posts = await prisma.post.findMany({
-      orderBy: { createdAt: "desc" },
-      include: {
-        author: true
-      }
-    });
-    res.json(posts);
-  } catch (err) {
-    console.error("getPosts error:", err);
-    res.status(500).json({ error: "Internal server error" });
+  export async function getPosts(req: AuthRequest, res: Response) {
+    try {
+      const { userId } = req.query;
+  
+      const where = userId ? {
+        authorId: userId as string
+      } : {};
+  
+      const posts = await prisma.post.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: true
+        }
+      });
+      
+      res.json(posts);
+    } catch (err) {
+      console.error("getPosts error:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
-}
