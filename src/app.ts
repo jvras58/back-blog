@@ -2,11 +2,20 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import postsRouter from "./post/posts.routes";
+import { developmentLogger, errorLogger } from "./config/logs";
 
 const app = express();
 
+const logMode = process.env.LOG_MODE || 'dev';
+
+if (logMode === 'production') {
+  app.use(errorLogger);
+} else if (logMode === 'dev') {
+  app.use(developmentLogger);
+}
+
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
 
