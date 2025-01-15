@@ -96,6 +96,15 @@ npx prisma db push
 npm run dev
 ```
 
+7. Inicie os tests:
+```bash
+npm test
+
+# ou
+
+npm run test:coverage
+```
+
 ## 🔃 Rotas da API
 
 ### Posts
