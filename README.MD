@@ -29,8 +29,27 @@ As tecnologias utilizadas são:
 - **dotenv** - Gerenciamento de variáveis de ambiente
 
 ## Organização do Projeto:
+```
+    /
+    ├── 📄 README.md
+    ├── 📄 docker-compose.yml
+    ├── {} package.json
+    ├── {} tsconfig.json
+    ├── .env-sample
+    ├── 📁 prisma/
+    │   └── schema.prisma
+    └── 📁 src/
+        ├── 🇹 app.ts
+        ├── 🇹 auth.middleware.ts
+        ├── 📁 config/
+        │   └── 🇹 logs.ts
+        ├── 📁 lib/
+        │   └── 🇹 db.ts
+        └── 📁 post/
+            ├── 🇹 posts.controller.ts
+            └── 🇹 posts.routes.ts
 
-
+```
 
 ## 🛠️ Funcionalidades
 
