@@ -83,7 +83,7 @@ export async function getPublicPosts(_req: Request, res: Response) {
   }
 }
 
-export async function updatePost(req: AuthRequest, res: Response) {
+export async function updatePost(req: AuthRequest, res: Response): Promise<void> {
   try {
     const { id } = req.params;
     const { title, content, description, category, tags } = req.body;
@@ -94,11 +94,13 @@ export async function updatePost(req: AuthRequest, res: Response) {
     });
 
     if (!post) {
-      return res.status(404).json({ error: "Post não encontrado" });
+      res.status(404).json({ error: "Post não encontrado" });
+      return;
     }
 
     if (post.authorId !== userId) {
-      return res.status(403).json({ error: "Não autorizado - Apenas o autor pode editar este post" });
+      res.status(403).json({ error: "Não autorizado - Apenas o autor pode editar este post" });
+      return;
     }
 
     const updatedPost = await prisma.post.update({
@@ -119,7 +121,7 @@ export async function updatePost(req: AuthRequest, res: Response) {
   }
 }
 
-export async function deletePost(req: AuthRequest, res: Response) {
+export async function deletePost(req: AuthRequest, res: Response): Promise<void> {
   try {
     const { id } = req.params;
     const userId = req.user?.sub;
@@ -129,11 +131,13 @@ export async function deletePost(req: AuthRequest, res: Response) {
     });
 
     if (!post) {
-      return res.status(404).json({ error: "Post não encontrado" });
+      res.status(404).json({ error: "Post não encontrado" });
+      return;
     }
 
     if (post.authorId !== userId) {
-      return res.status(403).json({ error: "Não autorizado - Apenas o autor pode deletar este post" });
+      res.status(403).json({ error: "Não autorizado - Apenas o autor pode deletar este post" });
+      return;
     }
 
     await prisma.post.delete({
