@@ -70,7 +70,7 @@ export async function getPublicPosts(_req: Request, res: Response) {
           select: {
             id: true,
             name: true,
-            image: true
+            email: true
           }
         }
       }

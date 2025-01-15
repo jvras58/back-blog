@@ -6,10 +6,6 @@ API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma 
 ## 🚀 Tecnologias e Ferramentas
 
 
-Este projeto é uma aplicação web que utiliza **Next.js**, um framework React focado em renderização do lado servidor e funcionalidades modernas de desenvolvimento web.
-
-As tecnologias utilizadas são:
-
 | **Tecnologia**        | **Versão**       |
 |-----------------------|------------------|
 | **Runtime**           |                  |
@@ -98,6 +94,15 @@ npx prisma db push
 6. Inicie o servidor:
 ```bash
 npm run dev
+```
+
+7. Inicie os tests:
+```bash
+npm test
+
+# ou
+
+npm run test:coverage
 ```
 
 ## 🔃 Rotas da API

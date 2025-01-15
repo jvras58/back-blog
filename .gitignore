@@ -6,4 +6,5 @@ node_modules
 *.log
 src/logs/acess.log
 
-
+# Tests
+coverage/
