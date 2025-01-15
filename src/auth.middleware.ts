@@ -14,17 +14,17 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
     try {
       const authHeader = req.headers.authorization;
       if (!authHeader) {
-        res.status(401).json({ error: "No token provided" });
+        res.status(401).json({ error: "Nenhum token fornecido" });
         return;
       }
   
       const [scheme, token] = authHeader.split(" ");
       if (scheme !== "Bearer" || !token) {
-        res.status(401).json({ error: "Token malformatted" });
+        res.status(401).json({ error: "Token malformatado" });
         return;
       }
   
-      const secret = process.env.AUTH_SECRET || "defaultsecret";
+      const secret = process.env.AUTH_SECRET || "";
       const decoded = jwt.verify(token, secret) as jwt.JwtPayload;
   
       req.user = {
@@ -33,10 +33,11 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
         role: decoded.role,
         name: decoded.name,
       };
-  
+      
+      // TODO: SE O BANCO ESTIVER DESLIGADO ELE TBM TA CAINDO NESSE ERRO NA VEZ DE DAR 500
       next();
     } catch (err) {
-      res.status(401).json({ error: "Token invalid or expired" });
+      res.status(401).json({ error: "Token inválido ou expirado" });
       return;
     }
   }
