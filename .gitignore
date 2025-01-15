@@ -4,6 +4,6 @@ node_modules
 
 # Logs
 *.log
-src/logs/*
+src/logs/acess.log
 
 
