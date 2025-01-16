@@ -61,7 +61,7 @@ API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma 
 - 👤 Proteção de rotas
 - 🔑 Middleware de autenticação
 
-## 💻 Como Executar
+## 💻 Configuração do Ambiente de Desenvolvimento LOCAL:
 
 1. Clone o repositório
 2. Instale as dependências:
@@ -75,11 +75,9 @@ npm install
 ```.env-sample``` para ```.env```
 
 
-- Ajuste as variáveis conforme necessário
-
-4. Inicie o banco de dados:
+4. Execute o container com o postgresql:
 ```bash
-docker-compose up -d
+docker run --name backend_vlab -e POSTGRES_USER=backend -e POSTGRES_PASSWORD=backend@123 -e POSTGRES_DB=backend -p 5432:5432 -d postgres
 ```
 
 5. Execute as migrações do Prisma:
@@ -112,16 +110,38 @@ npm run test:coverage
 > usar o test:coverage irá iniciar os testes em modo coverage para analise mais detalhadas.
 
 8. Inicie o ambiente de desenvolvimento:
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 > O servidor será iniciado em modo de desenvolvimento com hot-reload
 
 9. Visualize o funcionamento da API:
-   ```
-   http://localhost:4000/
-   ```
-   > A página principal do dashboard será carregada
+```
+http://localhost:4000/
+```
+   > A página home será carregada
+
+## 🛠️ Configuração do Ambiente de Desenvolvimento DOCKER:
+Este repositório está configurado para rodar em um **compose.yml**. Siga os passos abaixo para instanciar o ambiente.
+
+### Docker Engine
+
+É necessário ter o Docker Engine instalado. Veja o guia de instalação para seu sistema operacional [aqui](https://docs.docker.com/engine/install/).
+
+1. Utilize o .env:
+
+
+2. Inicialize o **compose.yml**:
+```bash
+docker compose up -d
+```
+   > As configurações faram todo o trabalho para rodar em modo detalhado: docker compose up
+
+3. Visualize o funcionamento da API:
+```
+http://localhost:4000/
+```
+   > A página home será carregada
 
 ## 🔃 Rotas da API
 
