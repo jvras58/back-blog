@@ -5,17 +5,22 @@ services:
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     ports:
       - "${DB_PORT}:5432"
-    volumes:
-      - backend_desafio_vlab:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}"] 
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   app:
     build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
     ports:
       - "4000:4000"
-    depends_on:
-      - postgres
     environment:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -25,6 +30,3 @@ services:
       - DATABASE_URL=${DATABASE_URL}
     volumes:
       - .:/app
-
-volumes:
-  backend_desafio_vlab:
