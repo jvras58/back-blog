@@ -7,12 +7,12 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-		"db:clear": "prisma migrate reset -f",
-		"db:push": "prisma db push --force-reset --accept-data-loss",
-		"db:studio": "prisma studio",
-		"postinstall": "prisma generate",
-		"migrate": "prisma migrate dev",
-		"seed": "node prisma/seed.ts"
+    "db:clear": "prisma migrate reset -f",
+    "db:push": "prisma db push --force-reset --accept-data-loss",
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate",
+    "migrate": "prisma migrate dev",
+    "seed": "node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +32,7 @@
     "prisma": "^6.2.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
