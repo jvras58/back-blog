@@ -22,7 +22,6 @@
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "@types/morgan": "^1.9.9",
-    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

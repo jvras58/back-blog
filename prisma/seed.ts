@@ -1,12 +1,12 @@
 const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 require('dotenv/config');
 
 // TODO: PARA ME EXECUTAR: 
 // npm run seed
-// ERRO Cannot find module: dotenv/bcrypt:
+// ERRO Cannot find module: dotenv/bcryptjs:
 // npm install dotenv
-// npm install bcrypt
+// npm install bcryptjs
 
 const prisma = new PrismaClient();
 
