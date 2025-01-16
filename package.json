@@ -6,7 +6,13 @@
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+		"db:clear": "prisma migrate reset -f",
+		"db:push": "prisma db push --force-reset --accept-data-loss",
+		"db:studio": "prisma studio",
+		"postinstall": "prisma generate",
+		"migrate": "prisma migrate dev",
+		"seed": "node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +22,7 @@
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "@types/morgan": "^1.9.9",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

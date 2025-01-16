@@ -22,8 +22,6 @@ model User {
   id                     String    @id @default(cuid())
   name                   String?
   email                  String    @unique
-  emailVerified          DateTime?
-  image                  String?
   role                   UserRole  @default(DEFAULT)
   posts                  Post[]
   password               String?
@@ -52,8 +50,8 @@ model ResetPasswordToken {
 }
 
 model Post {
-  id       String   @id @default(cuid())
-  title    String
+  id          String   @id @default(cuid())
+  title       String
   description String
   content     String
   category    String
