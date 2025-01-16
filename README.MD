@@ -77,24 +77,29 @@ npm install
 
 - Ajuste as variáveis conforme necessário
 
-4. Inicie o banco de dados (se não tiver já iniciado no front):
+4. Inicie o banco de dados:
 ```bash
 docker-compose up -d
 ```
 
 5. Execute as migrações do Prisma:
 ```bash
-npx prisma generate
-npx prisma migrate dev
-
-# Ou se já tiver iniciado no front sincronize:
-npx prisma db push
+npm run postinstall
+npm run migrate
 ```
+> Isso aplicará todas as alterações definidas no arquivo `schema.prisma`
 
-6. Inicie o servidor:
 ```bash
-npm run dev
+# Sincronize o prisma:
+npm run prisma db push
 ```
+
+6. Popule o banco de dados com dados iniciais:
+```bash
+npm run seed
+```
+> Esta etapa criará registros básicos necessários para testar a aplicação
+
 
 7. Inicie os tests:
 ```bash
@@ -104,6 +109,19 @@ npm test
 
 npm run test:coverage
 ```
+> usar o test:coverage irá iniciar os testes em modo coverage para analise mais detalhadas.
+
+8. Inicie o ambiente de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+> O servidor será iniciado em modo de desenvolvimento com hot-reload
+
+9. Visualize o funcionamento da API:
+   ```
+   http://localhost:4000/
+   ```
+   > A página principal do dashboard será carregada
 
 ## 🔃 Rotas da API
 
