@@ -178,3 +178,34 @@ http://localhost:4000/
 ### Logs
 - Morgan para logging de requisições
 - Diferentes modos de log (development/production)
+
+
+### Problema com docker
+
+Ao usar o `docker-compose.yml`, dependendo do sistema operacional, é necessário ajustar a variável `DB_HOST` nas variáveis de ambiente. 
+
+#### Configuração no Linux:
+
+```bash
+DB_USER="backend"
+DB_PASSWORD="backend123"
+DB_NAME="backend"
+DB_HOST="postgres"
+DB_PORT="5432"
+
+DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+```
+
+#### Configuração no Windows:
+
+```bash
+DB_USER="backend"
+DB_PASSWORD="backend123"
+DB_NAME="backend"
+DB_HOST="host.docker.internal"
+DB_PORT="5432"
+
+DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+```
+
+A principal diferença é o valor da variável `DB_HOST`.
