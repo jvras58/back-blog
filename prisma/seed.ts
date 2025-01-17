@@ -9,7 +9,21 @@ require('dotenv/config');
 
 const prisma = new PrismaClient();
 
+async function checkIfUsersExist() {
+  const userCount = await prisma.user.count();
+  return userCount > 0;
+}
+
 async function main() {
+  const hasUsers = await checkIfUsersExist();
+  
+  if (hasUsers) {
+    console.log('Banco de dados já está populado. Seed não será executado.');
+    return;
+  }
+
+  console.log('Iniciando seed do banco de dados...');
+
   const users = [
     { 
       id: "author1",
@@ -82,10 +96,13 @@ async function main() {
       }
     });
   }
+
+  console.log('Seed executado com sucesso!');
 }
 
 main()
   .catch((e) => {
+    console.error('Erro ao executar seed:', e);
     throw e;
   })
   .finally(async () => {
