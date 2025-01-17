@@ -3,6 +3,17 @@
 ## 📖 Sobre o Projeto
 API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma ORM para gerenciamento do banco de dados PostgreSQL.
 
+### Padrão de projeto
+
+- ``Model-View-Controller (MVC)`
+
+- **Model**: Representado pelos modelos do Prisma definidos em `schema.prisma`
+- **View**: Não há uma camada de visualização(pois este é um projeto de API REST) As respostas JSON servem como a "view".
+- **Controller**: Implementado nos controladores, como posts.controller.ts
+- **Middleware**: Para autenticação `auth.middleware.ts`
+- **Configuração**: Separação de configurações de log em `logs.ts`
+- **Roteamento**: Definição de rotas em `posts.routes.ts.`
+
 ## 🚀 Tecnologias e Ferramentas
 
 
