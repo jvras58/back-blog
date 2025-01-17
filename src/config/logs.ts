@@ -2,8 +2,14 @@ import fs from "fs";
 import path from "path";
 import morgan from "morgan";
 
+const logsDir = path.join(__dirname, '../logs');
+
+if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
+}
+
 const accessLogStream = fs.createWriteStream(
-    path.join(__dirname, '../logs/access.log'),
+    path.join(logsDir, 'access.log'),
     { flags: 'a' }
 );
 
