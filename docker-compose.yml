@@ -8,6 +8,8 @@ services:
       - POSTGRES_DB=${DB_NAME}
     ports:
       - "${DB_PORT}:5432"
+    networks:
+      - blog-network
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${DB_USER}"] 
       interval: 5s
@@ -28,5 +30,11 @@ services:
       - DB_HOST=postgres
       - NODE_ENV=development
       - DATABASE_URL=${DATABASE_URL}
+    networks:
+      - blog-network
     volumes:
       - .:/app
+
+networks:
+  blog-network:
+    driver: bridge
