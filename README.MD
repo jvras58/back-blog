@@ -45,6 +45,7 @@ API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma 
     ├── .env-sample
     ├── 📁 prisma/
     │   └── schema.prisma
+    |   └── 🇹 seed.ts
     └── 📁 src/
         ├── 🇹 app.ts
         ├── 🇹 auth.middleware.ts
@@ -144,7 +145,11 @@ Este repositório está configurado para rodar em um **compose.yml**. Siga os pa
 
 2. Inicialize o **compose.yml**:
 ```bash
-docker compose up -d
+docker compose -f compose.dev.yml up -d
+```
+ou para executar em prod:
+```bash
+docker compose --env-file .env.prod -f compose.prod.yml up -d
 ```
    > As configurações faram todo o trabalho para rodar em modo detalhado: docker compose up
 
