@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 4000
 
-CMD ["sh", "-c", "npm run postinstall && npm run migrate-dev && npm run seed && npm run dev"]
+CMD ["sh", "-c", "npm run postinstall && npm run db:push && npm run seed && npm run dev"]
