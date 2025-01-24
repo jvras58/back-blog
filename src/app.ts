@@ -14,8 +14,18 @@ if (logMode === 'production') {
   app.use(developmentLogger);
 }
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:4000',
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL && process.env.FRONTEND_URL !== "" ? process.env.FRONTEND_URL : "*",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origem não permitida pelo CORS.'));
+    }
+  },
   credentials: true,
 }));
 
