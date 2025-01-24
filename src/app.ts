@@ -18,6 +18,8 @@ const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:4000',
 ];
 
+console.log('Origens permitidas:', allowedOrigins);
+
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
