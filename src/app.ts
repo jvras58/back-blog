@@ -14,20 +14,8 @@ if (logMode === 'production') {
   app.use(developmentLogger);
 }
 
-const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:4000',
-];
-
-console.log('Origens permitidas:', allowedOrigins);
-
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Origem não permitida pelo CORS.'));
-    }
-  },
+  origin: "https://vblog-sigmal.vercel.app/",
   credentials: true,
 }));
 
