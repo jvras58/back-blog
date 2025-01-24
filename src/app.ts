@@ -14,8 +14,16 @@ if (logMode === 'production') {
   app.use(developmentLogger);
 }
 
+const allowedOrigins = process.env.FRONTEND_URL?.trim() || '*';
+
 app.use(cors({
-  origin: "https://vblog-sigmal.vercel.app/",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins === '*' || allowedOrigins === origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origem não permitida pelo CORS.'));
+    }
+  },
   credentials: true,
 }));
 
