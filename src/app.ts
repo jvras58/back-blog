@@ -14,18 +14,14 @@ if (logMode === 'production') {
   app.use(developmentLogger);
 }
 
-const allowedOrigins = process.env.FRONTEND_URL?.trim() || '*';
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins === '*' || allowedOrigins === origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Origem não permitida pelo CORS.'));
-    }
-  },
-  credentials: true,
-}));
+const corsOptions = {
+  origin: [process.env.FRONTEND_URL || 'https://vblog-sigmal.vercel.app/', 'http://localhost:3000', 'https://www.getpostman.com'], // Allow requests only from this origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Allow cookies, if your application uses them
+  optionsSuccessStatus: 204, // Some legacy browsers (IE11) choke on 204
+  headers: 'Content-Type, Authorization, Content-Length, X-Requested-With',
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
