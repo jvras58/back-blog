@@ -172,40 +172,63 @@ export async function getApiGeminiTest(_req: Request, res: Response) {
 
 export async function chatGeneratePost(req: AuthRequest, res: Response): Promise<any> {
   try {
-    const { messages, generatePost } = req.body;
-    const userId = req.user?.sub;
-
+    const userId = req.user?.sub
     if (!userId) {
-      return res.status(401).json({ error: "Unauthorized - User not authenticated" });
+      return res.status(401).json({ error: "Unauthorized - User not authenticated" })
     }
 
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return res.status(400).json({ error: "Mensagens inválidas" });
+    const { messages, generatePost, title } = req.body
+
+    let finalMessages = messages
+    if (!finalMessages || !Array.isArray(finalMessages) || finalMessages.length === 0) {
+      if (title) {
+        finalMessages = [
+          {
+            role: "user",
+            content: `Por favor, gere um post usando o título: "${title}". 
+              Inclua dicas, estrutura e informações relevantes.`
+          }
+        ]
+      } else {
+        // Se não tem messages nem title, devolve erro
+        return res.status(400).json({ error: "Mensagens inválidas. Envie ao menos 'title' ou 'messages'." })
+      }
     }
 
-    const chatContext = messages.map((msg: any) => `${msg.role}: ${msg.content}`).join("\n");
+    // Agora, finalMessages é um array de { role, content } pelo menos com 1 item (user)
+    const chatContext = finalMessages
+      .map((msg: any) => `${msg.role}: ${msg.content}`)
+      .join("\n")
 
+    // Podemos inserir uma "mensagem de sistema" (instruções internas) no prompt:
+    const systemInstructions = `
+      Você é um modelo de IA especialista em geração de conteúdo de blog.
+      Crie um post coerente, bem estruturado e atrativo, baseado nas informações do usuário.
+    `
+
+    // Construímos o prompt final que vai para o modelo
     const prompt = `
-      Gere uma postagem baseada na seguinte conversa com o usuário:
-      ${chatContext}
-      A postagem deve ser coerente, bem estruturada e atrativa.
-    `;
+      ${systemInstructions}
 
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    const generatedText = await response.text();
+      Conversa:
+      ${chatContext}
+    `
+
+    const result = await model.generateContent(prompt)
+    const response = result.response
+    const generatedText = await response.text()
 
     if (!generatePost) {
-      return res.json({ role: "assistant", content: generatedText });
+      return res.json({ role: "assistant", content: generatedText })
     }
 
-
-    res.status(201).json({ role: "assistant", content: generatedText });
+    return res.status(201).json({ role: "assistant", content: generatedText })
   } catch (err) {
-    console.error("chatGeneratePost error:", err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("chatGeneratePost error:", err)
+    return res.status(500).json({ error: "Internal server error" })
   }
 }
+
 
 // TODO: testing sem auth do next.js
 // export async function chatGeneratePostTest(req: AuthRequest, res: Response): Promise<any> {
