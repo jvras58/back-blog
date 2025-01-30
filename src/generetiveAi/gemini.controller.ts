@@ -151,7 +151,6 @@ export async function getApiGeminiTest(_req: Request, res: Response) {
   try {
     const prompt = "Responda com Pong";
 
-    // Faz a chamada ao modelo Gemini
     const result = await model.generateContent(prompt);
     const response = result.response;
 
@@ -185,49 +184,80 @@ export async function chatGeneratePost(req: AuthRequest, res: Response): Promise
         finalMessages = [
           {
             role: "user",
-            content: `Por favor, gere um post usando o título: "${title}". 
-              Inclua dicas, estrutura e informações relevantes.`
+            content: `Por favor, gere um post usando o título: "${title}".
+                      Inclua dicas, estrutura e informações relevantes.
+                      Retorne APENAS o objeto JSON, sem \`\`\` ou texto extra.`
           }
         ]
       } else {
-        // Se não tem messages nem title, devolve erro
-        return res.status(400).json({ error: "Mensagens inválidas. Envie ao menos 'title' ou 'messages'." })
+        return res.status(400).json({
+          error: "Mensagens inválidas. Envie ao menos 'title' ou 'messages'.",
+        })
       }
     }
 
-    // Agora, finalMessages é um array de { role, content } pelo menos com 1 item (user)
     const chatContext = finalMessages
       .map((msg: any) => `${msg.role}: ${msg.content}`)
       .join("\n")
 
-    // Podemos inserir uma "mensagem de sistema" (instruções internas) no prompt:
     const systemInstructions = `
       Você é um modelo de IA especialista em geração de conteúdo de blog.
       Crie um post coerente, bem estruturado e atrativo, baseado nas informações do usuário.
+      Retorne somente um JSON válido, no formato:
+      {
+        "title": "...",
+        "description": "...",
+        "content": "...",
+        "category": "...",
+        "tags": ["tag1","tag2"]
+      }
+      Não inclua \`\`\`json ou qualquer outra marcação de código.
     `
 
-    // Construímos o prompt final que vai para o modelo
     const prompt = `
       ${systemInstructions}
-
       Conversa:
       ${chatContext}
     `
 
     const result = await model.generateContent(prompt)
-    const response = result.response
-    const generatedText = await response.text()
+    const responseModel = result.response
+    const generatedText = (await responseModel.text()).trim()
 
     if (!generatePost) {
       return res.json({ role: "assistant", content: generatedText })
     }
 
-    return res.status(201).json({ role: "assistant", content: generatedText })
+    try {
+      let trimmed = generatedText
+
+      // TODO: fazer ele remover quando ele tenta marcar de negrito ** e *
+      if (trimmed.startsWith("```json")) {
+        trimmed = trimmed.slice(7)
+      } else if (trimmed.startsWith("```")) {
+        trimmed = trimmed.slice(3)
+      }
+
+      if (trimmed.endsWith("```")) {
+        trimmed = trimmed.slice(0, trimmed.length - 3)
+      }
+
+      const parsedJson = JSON.parse(trimmed)
+      return res.status(201).json(parsedJson)
+    } catch (err) {
+      console.error("Erro ao fazer parse do JSON gerado:", err)
+      return res.status(201).json({
+        role: "assistant",
+        content: generatedText,
+        warning: "Falha ao analisar JSON. Conteúdo bruto retornado."
+      })
+    }
   } catch (err) {
     console.error("chatGeneratePost error:", err)
     return res.status(500).json({ error: "Internal server error" })
   }
 }
+
 
 
 // TODO: testing sem auth do next.js
