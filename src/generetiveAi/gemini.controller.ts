@@ -206,3 +206,47 @@ export async function chatGeneratePost(req: AuthRequest, res: Response): Promise
     res.status(500).json({ error: "Internal server error" });
   }
 }
+
+// TODO: testing sem auth do next.js
+// export async function chatGeneratePostTest(req: AuthRequest, res: Response): Promise<any> {
+//   try {
+//     const { messages, generatePost } = req.body;
+
+//     if (!messages || !Array.isArray(messages) || messages.length === 0) {
+//       return res.status(400).json({ error: "Mensagens inválidas" });
+//     }
+
+//     const chatContext = messages.map((msg: any) => `${msg.role}: ${msg.content}`).join("\n");
+
+//     const prompt = `
+//       Gere uma postagem baseada na seguinte conversa com o usuário:
+//       ${chatContext}
+//       A postagem deve ser coerente, bem estruturada e atrativa.
+//     `;
+
+//     const result = await model.generateContent(prompt);
+//     const response = result.response;
+//     const generatedText = await response.text();
+
+//     if (!generatePost) {
+//       return res.json({ role: "assistant", content: generatedText });
+//     }
+
+//     res.status(201).json({ role: "assistant", content: generatedText });
+//   } catch (err) {
+//     console.error("chatGeneratePost error:", err);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// }
+
+// curl -X POST http://localhost:4000/genAi/chat \
+// -H "Content-Type: application/json" \
+// -d '{
+//   "messages": [
+//     {
+//       "role": "user",
+//       "content": "Como criar uma aplicação React?"
+//     }
+//   ],
+//   "generatePost": true
+// }'
