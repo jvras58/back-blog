@@ -170,4 +170,39 @@ export async function getApiGeminiTest(_req: Request, res: Response) {
   }
 }
 
+export async function chatGeneratePost(req: AuthRequest, res: Response): Promise<any> {
+  try {
+    const { messages, generatePost } = req.body;
+    const userId = req.user?.sub;
 
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized - User not authenticated" });
+    }
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ error: "Mensagens inválidas" });
+    }
+
+    const chatContext = messages.map((msg: any) => `${msg.role}: ${msg.content}`).join("\n");
+
+    const prompt = `
+      Gere uma postagem baseada na seguinte conversa com o usuário:
+      ${chatContext}
+      A postagem deve ser coerente, bem estruturada e atrativa.
+    `;
+
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const generatedText = await response.text();
+
+    if (!generatePost) {
+      return res.json({ role: "assistant", content: generatedText });
+    }
+
+
+    res.status(201).json({ role: "assistant", content: generatedText });
+  } catch (err) {
+    console.error("chatGeneratePost error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}

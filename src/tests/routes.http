@@ -1,0 +1,63 @@
+# Estamos usando tbm o https://github.com/Huachao/vscode-restclient verificar exemplos que é possivel fazer com ele!
+
+# @name: get welcome to API
+GET http://localhost:4000/
+
+###
+
+# @name: get-all-posts-public
+GET http://localhost:4000/posts/public
+
+###
+
+# @name: get-api-gemini-status
+GET http://localhost:4000/genAi/ping
+
+###
+
+### Login para obter token
+# @name login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "seu-email@example.com",
+    "password": "sua-senha"
+}
+
+### Extrair token da resposta do login
+@authToken = {{login.response.body.token}}
+
+### Criar um prompt
+# @name createPrompt
+POST http://localhost:4000/genAi/
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "title": "Teste Prompt",
+    "content": "Conteúdo do prompt de teste",
+    "description": "Descrição do teste"
+}
+
+### Extrair ID do prompt criado
+@promptId = {{createPrompt.response.body.id}}
+
+### Atualizar prompt
+PUT http://localhost:4000/prompts/{{promptId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "title": "Título Atualizado",
+    "content": "Conteúdo atualizado",
+    "description": "Nova descrição"
+}
+
+### Deletar prompt
+DELETE http://localhost:4000/prompts/{{promptId}}
+Authorization: Bearer {{authToken}}
+
+### Listar prompts do usuário
+GET http://localhost:4000/prompts?userId={{login.response.body.user.id}}
+Authorization: Bearer {{authToken}}
