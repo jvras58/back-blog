@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import postsRouter from "./post/posts.routes";
+import genAiRouter from "./generetiveAi/gemini.routes";
 import { developmentLogger, errorLogger } from "./config/logs";
 
 const app = express();
@@ -27,6 +28,8 @@ app.use(express.json());
 
 // Rotas
 app.use("/posts", postsRouter);
+
+app.use("/genAi", genAiRouter);
 
 app.get("/", (_req, res) => {
   res.send("API do Blog ok!");

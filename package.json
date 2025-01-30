@@ -21,6 +21,7 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "@prisma/client": "^6.2.1",
     "@types/morgan": "^1.9.9",
     "bcryptjs": "^2.4.3",
