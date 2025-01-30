@@ -2,6 +2,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 import "dotenv/config";
 
 // documentação : https://github.com/google/generative-ai-js
+// documentação : https://ai.google.dev/gemini-api/docs/quickstart?hl=pt-br&lang=node
 export const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export const model = genAI.getGenerativeModel({
