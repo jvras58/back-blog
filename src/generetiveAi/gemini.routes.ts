@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../auth.middleware";
-import { createPrompt, getPrompt, updatePrompt, deletePrompt, getPublicPrompt, getApiGemini } from "./gemini.controller";
+import { createPrompt, getPrompt, updatePrompt, deletePrompt, getPublicPrompt, getApiGeminiTest } from "./gemini.controller";
 
 const router = Router();
 
@@ -9,7 +9,7 @@ const router = Router();
 router.get("/public", getPublicPrompt);
 
 // Rotas publicas com conexão a api
-router.get("/generative-ai", getApiGemini);
+router.get("/generative-ai", getApiGeminiTest);
 
 
 // Rotas protegidas

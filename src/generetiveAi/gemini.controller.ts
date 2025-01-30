@@ -147,7 +147,7 @@ export async function deletePrompt(req: AuthRequest, res: Response): Promise<voi
   }
 }
 
-export async function getApiGemini(_req: Request, res: Response) {
+export async function getApiGeminiTest(_req: Request, res: Response) {
   try {
     const prompt = "Responda com Pong";
 
