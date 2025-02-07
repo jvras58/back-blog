@@ -8,3 +8,6 @@ src/logs/acess.log
 
 # Tests
 coverage/
+
+# compiler javascript
+dist/
