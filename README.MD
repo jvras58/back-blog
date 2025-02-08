@@ -39,7 +39,7 @@ API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma 
 ```
     /
     ├── 📄 README.md
-    ├── 📄 docker-compose.yml
+    ├── 📄 compose.yml
     ├── {} package.json
     ├── {} tsconfig.json
     ├── .env-sample
@@ -53,9 +53,6 @@ API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma 
         │   └── 🇹 logs.ts
         ├── 📁 lib/
         │   └── 🇹 db.ts
-        └── 📁 post/
-            ├── 🇹 posts.controller.ts
-            └── 🇹 posts.routes.ts
 
 ```
 
@@ -210,7 +207,7 @@ DB_NAME="backend"
 DB_HOST="host.docker.internal"
 DB_PORT="5432"
 
-DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}"
 ```
 
 A principal diferença é o valor da variável `DB_HOST`.

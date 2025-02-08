@@ -54,7 +54,6 @@ async function main() {
             titulo_formacao: "ADS",
             instituicao: "Universidade localhost",
             data_conclusao: new Date("2030-01-01"),
-            escola: "Escola localhost"
           }]
         }
       }

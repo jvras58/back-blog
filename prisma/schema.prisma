@@ -70,7 +70,7 @@ model Profile {
   
   user     User       @relation(fields: [userId], references: [id])
   role     Role       @relation(fields: [roleId], references: [id])
-  prompts  Prompt[]
+  planosAula  planoAula[]
 }
 
 model Endereco {
@@ -94,7 +94,6 @@ model Formacao {
   titulo_formacao String
   instituicao     String
   data_conclusao  DateTime?
-  escola          String?
   
   profile         Profile  @relation(fields: [profileId], references: [id])
 }
@@ -118,7 +117,7 @@ model ResetPasswordToken {
   @@unique([email, token])
 }
 
-model Prompt {
+model planoAula {
   id          String   @id @default(cuid())
   authorId    String
   description String
