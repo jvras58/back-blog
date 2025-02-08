@@ -13,21 +13,90 @@ generator client {
   provider = "prisma-client-js"
 }
 
-enum UserRole {
-  DEFAULT
-  ADMIN
+model Role {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  profiles Profile[]
 }
 
 model User {
-  id                     String    @id @default(cuid())
-  name                   String?
-  email                  String    @unique
-  role                   UserRole  @default(DEFAULT)
-  posts                  Post[]
-  prompts                Prompt[]
-  password               String?
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @updatedAt
+  id            String   @id @default(cuid())
+  name          String
+  email         String    @unique
+  
+  
+  password      String?
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  profile       Profile?
+  accounts      Account[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Profile {
+  id       String     @id @default(cuid())
+  userId   String     @unique
+  roleId   String
+  sexo     String?
+  dataNascimento DateTime?
+  curriculum String?
+  celular  String
+  telefone String?
+  sobre    String?
+  
+  enderecos Endereco[]
+  formacoes Formacao[]
+  
+  user     User       @relation(fields: [userId], references: [id])
+  role     Role       @relation(fields: [roleId], references: [id])
+  prompts  Prompt[]
+}
+
+model Endereco {
+  id          String  @id @default(cuid())
+  profileId   String
+  cep         String
+  rua         String?
+  numero      String?
+  complemento String?
+  estado      String
+  municipio   String
+  bairro      String
+  
+  profile     Profile @relation(fields: [profileId], references: [id])
+}
+
+model Formacao {
+  id              String   @id @default(cuid())
+  profileId       String
+  tipo_formacao   String
+  titulo_formacao String
+  instituicao     String
+  data_conclusao  DateTime?
+  escola          String?
+  
+  profile         Profile  @relation(fields: [profileId], references: [id])
 }
 
 
@@ -40,7 +109,6 @@ model VerificationToken {
   @@unique([email, token])
 }
 
-
 model ResetPasswordToken {
   id      String   @id @default(cuid())
   email   String   @unique
@@ -50,26 +118,12 @@ model ResetPasswordToken {
   @@unique([email, token])
 }
 
-model Post {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  content     String
-  category    String
-  tags        String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id])
-}
-
 model Prompt {
   id          String   @id @default(cuid())
-  title       String
+  authorId    String
   description String
-  content     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id])
+  Profile     Profile? @relation(fields: [profileId], references: [id])
+  profileId   String?
 }

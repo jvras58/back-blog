@@ -1,7 +1,6 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import postsRouter from "./post/posts.routes";
 import genAiRouter from "./generetiveAi/gemini.routes";
 import { developmentLogger, errorLogger } from "./config/logs";
 
@@ -16,18 +15,16 @@ if (logMode === 'production') {
 }
 
 const corsOptions = {
-  origin: [process.env.FRONTEND_URL || 'https://vblog-sigmal.vercel.app/', 'http://localhost:3000', 'https://www.getpostman.com'], // Allow requests only from this origin
+  origin: [process.env.FRONTEND_URL || 'http://localhost:3000', 'https://www.getpostman.com'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Allow cookies, if your application uses them
-  optionsSuccessStatus: 204, // Some legacy browsers (IE11) choke on 204
+  credentials: true,
+  optionsSuccessStatus: 204, 
   headers: 'Content-Type, Authorization, Content-Length, X-Requested-With',
 };
 app.use(cors(corsOptions));
 
 app.use(express.json());
 
-// Rotas
-app.use("/posts", postsRouter);
 
 app.use("/genAi", genAiRouter);
 
@@ -35,7 +32,7 @@ app.get("/", (_req, res) => {
   res.send("API do Blog ok!");
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });

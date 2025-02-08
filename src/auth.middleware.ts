@@ -34,10 +34,16 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
         name: decoded.name,
       };
       
-      // TODO: SE O BANCO ESTIVER DESLIGADO ELE TBM TA CAINDO NESSE ERRO NA VEZ DE DAR 500
       next();
-    } catch (err) {
-      res.status(401).json({ error: "Token inválido ou expirado" });
+    } catch (err: any) {
+      if (err.code && (
+        err.code.startsWith('08')
+      )) {
+        res.status(503).json({ error: "Erro de conexão com o banco de dados" });
+        return;
+      }
+
+      res.status(498).json({ error: "Token inválido ou expirado" });
       return;
     }
   }

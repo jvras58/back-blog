@@ -129,7 +129,7 @@ npm run dev
 
 9. Visualize o funcionamento da API:
 ```
-http://localhost:4000/
+http://localhost:3000/
 ```
    > A página home será carregada
 
@@ -155,7 +155,7 @@ docker compose --env-file .env.prod -f compose.prod.yml up -d
 
 3. Visualize o funcionamento da API:
 ```
-http://localhost:4000/
+http://localhost:3000/
 ```
    > A página home será carregada
 
@@ -177,7 +177,7 @@ http://localhost:4000/
 
 ### Ambiente de Desenvolvimento
 - TypeScript para desenvolvimento
-- ts-node-dev para hot-reload
+- ts-node para hot-reload
 - ESLint e Prettier para padronização de código
 
 ### Logs
