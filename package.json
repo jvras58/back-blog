@@ -6,7 +6,7 @@
     "dev": "nodemon --exec ts-node src/app.ts",
     "start": "ts-node src/app.ts",
     "build": "tsc",
-    "start:prod": "npm run build && node dist/app.js",
+    "start:prod": "npm run build && node dist/app.js", 
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

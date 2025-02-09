@@ -7,6 +7,7 @@ import { developmentLogger, errorLogger } from "./config/logs";
 const app = express();
 
 const logMode = process.env.LOG_MODE || 'dev';
+const NODE_ENV = process.env.NODE_ENV || 'dev';
 
 if (logMode === 'production') {
   app.use(errorLogger);
@@ -33,6 +34,10 @@ app.get("/", (_req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
+}
+
+export default app;
