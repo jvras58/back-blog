@@ -1,9 +1,9 @@
 # Estamos usando tbm o https://github.com/Huachao/vscode-restclient verificar exemplos que é possivel fazer com ele!
 
 # @name: get welcome to API
-GET http://localhost:3000/
+GET http://localhost:4000/
 
 ###
 
 # @name: get-api-gemini-status
-GET http://localhost:3000/genAi/ping
+GET http://localhost:4000/genAi/ping

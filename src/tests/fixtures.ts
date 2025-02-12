@@ -1,6 +1,7 @@
 import { prisma } from "../lib/db";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { AUTH_SECRET } from "../config/env";
 
 export async function createTestUser(overrides = {}) {
   const defaultRole = await prisma.role.create({
@@ -52,8 +53,7 @@ export async function createTestUser(overrides = {}) {
 }
 
 export function createToken(userId: string): string {
-    const secret = process.env.AUTH_SECRET || "test-secret";
-    return jwt.sign({ sub: userId }, secret, { expiresIn: '1h' });
+    return jwt.sign({ sub: userId }, AUTH_SECRET, { expiresIn: '1h' });
 }
 
 export async function clearDatabase() {

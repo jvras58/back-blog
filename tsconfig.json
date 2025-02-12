@@ -8,6 +8,6 @@
     "resolveJsonModule": true,
     "outDir": "dist"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "auth.middleware.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: backend_vlab
+    container_name: pibiotec_backend
     image: postgres
     environment:
       - POSTGRES_USER=${DB_USER}
@@ -9,7 +9,7 @@ services:
     ports:
       - "${DB_PORT}:5432"
     networks:
-      - blog-network
+      - vlab-network
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${DB_USER}"]
       interval: 5s
@@ -24,19 +24,19 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "3000:3000"
+      - "4000:4000"
     environment:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=${DB_PORT}
-      - DB_HOST=postgres
+      - DB_HOST=${DB_HOST}
       - NODE_ENV=development
       - DATABASE_URL=${DATABASE_URL}
     networks:
-      - blog-network
+      - vlab-network
     volumes:
       - .:/app
 
 networks:
-  blog-network:
+  vlab-network:
     driver: bridge

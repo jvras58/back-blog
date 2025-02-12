@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getPrompt, getApiGemini } from './gemini.controller';
+import { getPlanoAula, getApiGemini } from './gemini.controller';
 import { prisma } from '../lib/db';
 import { model } from '../lib/gemini';
 
@@ -41,11 +41,11 @@ describe('Gemini Controller', () => {
   describe('getPrompt', () => {
     it('deve buscar prompts sem userId', async () => {
       const mockPrompts = [{ id: 1, text: 'test' }];
-      (prisma.prompt.findMany as jest.Mock).mockResolvedValue(mockPrompts);
+      (prisma.planoAula.findMany as jest.Mock).mockResolvedValue(mockPrompts);
 
-      await getPrompt(mockReq as any, mockRes as Response);
+      await getPlanoAula(mockReq as any, mockRes as Response);
 
-      expect(prisma.prompt.findMany).toHaveBeenCalledWith({
+      expect(prisma.planoAula.findMany).toHaveBeenCalledWith({
         where: {},
         orderBy: { createdAt: 'desc' },
         include: {
@@ -62,11 +62,11 @@ describe('Gemini Controller', () => {
     it('deve buscar prompts com userId', async () => {
       mockReq.query = { userId: 'user123' };
       const mockPrompts = [{ id: 1, text: 'test' }];
-      (prisma.prompt.findMany as jest.Mock).mockResolvedValue(mockPrompts);
+      (prisma.planoAula.findMany as jest.Mock).mockResolvedValue(mockPrompts);
 
-      await getPrompt(mockReq as any, mockRes as Response);
+      await getPlanoAula(mockReq as any, mockRes as Response);
 
-      expect(prisma.prompt.findMany).toHaveBeenCalledWith({
+      expect(prisma.planoAula.findMany).toHaveBeenCalledWith({
         where: { authorId: 'user123' },
         orderBy: { createdAt: 'desc' },
         include: {
@@ -80,9 +80,9 @@ describe('Gemini Controller', () => {
     });
 
     it('deve lidar com erros', async () => {
-      (prisma.prompt.findMany as jest.Mock).mockRejectedValue(new Error('DB Error'));
+      (prisma.planoAula.findMany as jest.Mock).mockRejectedValue(new Error('DB Error'));
 
-      await getPrompt(mockReq as any, mockRes as Response);
+      await getPlanoAula(mockReq as any, mockRes as Response);
 
       expect(mockRes.status).toHaveBeenCalledWith(500);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Internal server error' });

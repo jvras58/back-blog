@@ -11,3 +11,6 @@ coverage/
 
 # compiler javascript
 dist/
+
+# docs json
+src/config/swagger-output.json

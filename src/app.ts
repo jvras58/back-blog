@@ -2,12 +2,13 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import genAiRouter from "./generetiveAi/gemini.routes";
+import auth from "./auth/auth.routes";
+import swaggerRoute from "./docs/docs.routes";
 import { developmentLogger, errorLogger } from "./config/logs";
+import { FRONTEND_URL, logMode, NODE_ENV, PORT } from "./config/env";
 
 const app = express();
 
-const logMode = process.env.LOG_MODE || 'dev';
-const NODE_ENV = process.env.NODE_ENV || 'dev';
 
 if (logMode === 'production') {
   app.use(errorLogger);
@@ -16,25 +17,39 @@ if (logMode === 'production') {
 }
 
 const corsOptions = {
-  origin: [process.env.FRONTEND_URL || 'http://localhost:3000', 'https://www.getpostman.com'],
+  origin: [FRONTEND_URL || 'http://localhost:3000', 'https://www.getpostman.com'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204, 
   headers: 'Content-Type, Authorization, Content-Length, X-Requested-With',
 };
 app.use(cors(corsOptions));
-
 app.use(express.json());
+app.use(swaggerRoute);
 
 
+// Auth.js
+app.use(auth);
+
+
+
+
+// Rotas
 app.use("/genAi", genAiRouter);
 
+// Rota raiz
 app.get("/", (_req, res) => {
-  res.send("API do Blog ok!");
+  /*
+      #swagger.tags = ['root']
+      #swagger.summary = 'Rota raiz'
+      #swagger.description = 'Rota raiz da API, retornando uma mensagem de sucesso.'
+  */
+  res.send("API Pibiotec online!");
 });
 
-const PORT = process.env.PORT || 3000;
-if (process.env.NODE_ENV !== 'test') {
+
+
+if (NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
   });

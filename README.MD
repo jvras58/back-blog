@@ -1,18 +1,17 @@
-# Blog - desafio Vlab
+# PIBIOTEC - BACKEND
 
 ## 📖 Sobre o Projeto
-API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma ORM para gerenciamento do banco de dados PostgreSQL.
+API REST desenvolvida para ........., utilizando Express.js com Prisma ORM para gerenciamento do banco de dados PostgreSQL.
 
 ### Padrão de projeto
 
-- ``Model-View-Controller (MVC)`
-
-- **Model**: Representado pelos modelos do Prisma definidos em `schema.prisma`
-- **View**: Não há uma camada de visualização(pois este é um projeto de API REST) As respostas JSON servem como a "view".
-- **Controller**: Implementado nos controladores, como posts.controller.ts
+- **Model**: Representado pelos modelos do Prisma definido em `schema.prisma`
+- **Teste Unitario**: Implementado com o jest, como `xxxxx.controller.test.ts`
+- **Controller**: Implementado nos controladores, como `xxxxx.controller.ts`
+- **Roteamento**: Definição de rotas em `xxxx.routes.ts.`
 - **Middleware**: Para autenticação `auth.middleware.ts`
 - **Configuração**: Separação de configurações de log em `logs.ts`
-- **Roteamento**: Definição de rotas em `posts.routes.ts.`
+
 
 ## 🚀 Tecnologias e Ferramentas
 
@@ -22,13 +21,16 @@ API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma 
 | **Runtime**           |                  |
 | Node.js               | v20.x.x          |
 | **Framework**         |                  |
-| Express               | v4.x.x           |
+| Express               | v4.21.2          |
 | **Banco de Dados**    |                  |
-| prisma                | v6.x.x           |
+| prisma                | v6.2.1           |
+| postgresql            |                  |
 | **Devtime**           |                  |
 | npm                   | v9.x.x           |
+| docker engine         |                  |
 
 ### Dependências Principais
+- **express** - Framework web para criação de APis REST
 - **jsonwebtoken** - Autenticação JWT
 - **bcryptjs** - Criptografia de senhas
 - **cors** - Middleware para CORS
@@ -50,7 +52,17 @@ API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma 
         ├── 🇹 app.ts
         ├── 🇹 auth.middleware.ts
         ├── 📁 config/
-        │   └── 🇹 logs.ts
+        │   |── 🇹 logs.ts
+        │   |── 🇹 env.ts
+        │   └── 🇹 swagger.ts
+        |
+        ├── 📁 docs/
+        |   └── 🇹 docs.routes.ts          
+        |
+        ├── 📁 modulo_exemple/
+        │   |── 🇹 exemple.controller.test.ts
+        |   |── 🇹 exemple.controller.ts
+        |   └── 🇹 exemple.routes.ts  
         ├── 📁 lib/
         │   └── 🇹 db.ts
 
@@ -58,12 +70,12 @@ API REST desenvolvida para um sistema de blog, utilizando Express.js com Prisma 
 
 ## 🛠️ Funcionalidades
 
-### Posts
-- ✅ Criação de posts
-- 📖 Listagem de posts (público e privado)
-- 📝 Atualização de posts
-- 🗑️ Deleção de posts
-- 🏷️ Suporte a tags e categorias
+### 📖 Documentação
+> Documentação com Swagger Usando OpenAPI v3
+
+### generativeAi
+- ✅ Testagem com rota de ping
+- 📖 Listagem
 
 ### Autenticação
 - 🔐 Sistema de autenticação JWT
@@ -86,7 +98,7 @@ npm install
 
 4. Execute o container com o postgresql:
 ```bash
-docker run --name backend_vlab -e POSTGRES_USER=backend -e POSTGRES_PASSWORD=backend@123 -e POSTGRES_DB=backend -p 5432:5432 -d postgres
+docker run --name postgres -e POSTGRES_USER=backend -e POSTGRES_PASSWORD=backend123 -e POSTGRES_DB=backend -p 5432:5432 -d postgres
 ```
 
 5. Execute as migrações do Prisma:
@@ -105,7 +117,7 @@ npm run prisma db push
 ```bash
 npm run seed
 ```
-> Esta etapa criará registros básicos necessários para testar a aplicação
+> Esta etapa criará registros básicos necessários para testar a aplicação em modo dev
 
 
 7. Inicie os tests:
@@ -126,9 +138,14 @@ npm run dev
 
 9. Visualize o funcionamento da API:
 ```
-http://localhost:3000/
+http://localhost:4000/
 ```
    > A página home será carregada
+
+```
+http://localhost:4000/docs
+```
+> A página do swagger será carregada
 
 ## 🛠️ Configuração do Ambiente de Desenvolvimento DOCKER:
 Este repositório está configurado para rodar em um **compose.yml**. Siga os passos abaixo para instanciar o ambiente.
@@ -148,22 +165,26 @@ ou para executar em prod:
 ```bash
 docker compose --env-file .env.prod -f compose.prod.yml up -d
 ```
-   > As configurações faram todo o trabalho para rodar em modo detalhado: docker compose up
+> As configurações faram todo o trabalho para rodar em modo detalhado: so retirar a flag -d
 
 3. Visualize o funcionamento da API:
 ```
-http://localhost:3000/
+http://localhost:4000/
 ```
-   > A página home será carregada
+> A página home será carregada
+
+```
+http://localhost:4000/docs
+```
+> A página do swagger será carregada
 
 ## 🔃 Rotas da API
 
 ### Posts
-- `GET /posts/public` - Lista todos os posts (público)
-- `POST /posts` - Cria novo post (autenticado)
-- `GET /posts` - Lista posts do usuário (autenticado)
-- `PUT /posts/:id` - Atualiza um post (autenticado)
-- `DELETE /posts/:id` - Deleta um post (autenticado)
+
+- - `GET /docs` - Documentação usando o swagger Openai 3.0
+- `GET /genAi/` - Lista planos de aula (autenticado)
+- `GET genAi/ping/` - Testa conexão com a generativeAI
 
 ## ⚙️ Configurações
 
@@ -180,34 +201,3 @@ http://localhost:3000/
 ### Logs
 - Morgan para logging de requisições
 - Diferentes modos de log (development/production)
-
-
-### Problema com docker
-
-Ao usar o `docker-compose.yml`, dependendo do sistema operacional, é necessário ajustar a variável `DB_HOST` nas variáveis de ambiente. 
-
-#### Configuração no Linux:
-
-```bash
-DB_USER="backend"
-DB_PASSWORD="backend123"
-DB_NAME="backend"
-DB_HOST="postgres"
-DB_PORT="5432"
-
-DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
-```
-
-#### Configuração no Windows:
-
-```bash
-DB_USER="backend"
-DB_PASSWORD="backend123"
-DB_NAME="backend"
-DB_HOST="host.docker.internal"
-DB_PORT="5432"
-
-DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}"
-```
-
-A principal diferença é o valor da variável `DB_HOST`.
