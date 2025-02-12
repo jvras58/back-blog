@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/db";
-import type { AuthRequest } from "../../auth.middleware";
 import { model } from "../lib/gemini";
 
-export async function getPlanoAula(req: AuthRequest, res: Response) {
+export async function getPlanoAula(req: Request, res: Response) {
   /*
       #swagger.tags = ['genAi']
       #swagger.summary = 'Busca planos de aula'

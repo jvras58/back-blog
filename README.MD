@@ -44,13 +44,14 @@ API REST desenvolvida para ........., utilizando Express.js com Prisma ORM para 
     ├── 📄 compose.yml
     ├── {} package.json
     ├── {} tsconfig.json
+    ├── 🇹 middleware.ts
+    ├── 🇹 auth.ts
     ├── .env-sample
     ├── 📁 prisma/
     │   └── schema.prisma
     |   └── 🇹 seed.ts
     └── 📁 src/
         ├── 🇹 app.ts
-        ├── 🇹 auth.middleware.ts
         ├── 📁 config/
         │   |── 🇹 logs.ts
         │   |── 🇹 env.ts
@@ -63,6 +64,7 @@ API REST desenvolvida para ........., utilizando Express.js com Prisma ORM para 
         │   |── 🇹 exemple.controller.test.ts
         |   |── 🇹 exemple.controller.ts
         |   └── 🇹 exemple.routes.ts  
+        |
         ├── 📁 lib/
         │   └── 🇹 db.ts
 

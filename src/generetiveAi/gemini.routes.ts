@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { authMiddleware } from "../../auth.middleware";
 import { getPlanoAula, getApiGemini } from "./gemini.controller";
+import { authenticatedUser } from "../../middleware";
+
 
 const router = Router();
 
@@ -10,7 +11,7 @@ router.get("/ping", getApiGemini);
 
 
 // Rotas protegidas
-router.get("/", authMiddleware, getPlanoAula);
+router.get("/protected", authenticatedUser, getPlanoAula);
 
 
 export default router;
