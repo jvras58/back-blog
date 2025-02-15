@@ -3,75 +3,47 @@ import Credentials from "@auth/express/providers/credentials"
 import { ExpressAuthConfig } from "@auth/express";
 import { CredentialsSchema } from "./src/schemas";
 import { findUserByEmail } from "./src/services";
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { prisma } from "./src/lib/db";
 import { compare } from "bcryptjs";
 
-declare module "@auth/express" {
-  interface Session {
-    user: {
-      id: string;
-    };
-  }
-}
-
 export const authConfig: ExpressAuthConfig = {
+  adapter: PrismaAdapter({ prisma }),
+  session: { strategy: "jwt" },
   providers: [
     Google({}),
     Credentials({
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "text" },
+        password: { label: "Senha", type: "password" },
       },
       async authorize(credentials) {
-        console.log("Iniciando processo de autorização");
-        try {
-          console.log("Validando credenciais...");
-          const validatedCredentials = CredentialsSchema.safeParse(credentials);
-  
-          if (!validatedCredentials.success) {
-            console.log("Falha na validação das credenciais");
-            throw new Error("Credenciais inválidas");
-          }
-  
-          const { email, password } = validatedCredentials.data;
-          console.log(`Buscando usuário com email: ${email}`);
-          const user = await findUserByEmail(email);
-  
-          if (!user || !user.password) {
-            console.log("Usuário não encontrado ou senha inexistente");
-            throw new Error("Email não encontrado");
-          }
-  
-          console.log("Comparando senha fornecida com a senha armazenada");
-          const isValidPassword = await compare(password, user.password);
-  
-          if (!isValidPassword) {
-            console.log("Senha incorreta");
-            throw new Error("Senha incorreta");
-          }
-  
-          console.log("Autorização bem-sucedida, usuário autenticado");
-          return user;
-        } catch (error) {
-          console.log("Erro na autorização:", error instanceof Error ? error.message : error);
-          throw new Error(error instanceof Error ? error.message : "Erro na autenticação");
+        const validatedCredentials = CredentialsSchema.safeParse(credentials);
+        if (validatedCredentials.success) {
+            const { email, password } = validatedCredentials.data;
+            const user = await findUserByEmail(email);
+            if (!user || !user.password) {
+                throw new Error("Credenciais inválidas");
+            }
+            const validPassword = await compare(password, user.password);
+            if (validPassword) return user;
         }
-      }
+        return null;
+    },
     })
   ],
   callbacks: {
     async session({ session, token }) {
-      console.log("Callback session iniciado");
       if (token.sub) {
-        session.user.id = token.sub; // token.sub contém o ID do usuário
-        console.log(`Sessão configurada com usuário ID: ${token.sub}`);
+        // Adiciona a propriedade `id` ao objeto de usuário da sessão
+        session.user.id = token.sub; // `token.sub` contém o ID do usuário
       }
       return session;
     },
     async jwt({ token, user }) {
-      console.log("Callback JWT iniciado");
       if (user) {
+        //Adiciona o ID do usuário ao JWT
         token.sub = user.id;
-        console.log(`Token JWT atualizado com usuário ID: ${user.id}`);
       }
       return token;
     },

@@ -28,8 +28,8 @@ app.use(express.json());
 app.use(swaggerRoute);
 
 
-// Auth.js
-app.use(auth);
+// Autenticação com o Auth.js:
+app.use("/auth", auth);
 
 
 

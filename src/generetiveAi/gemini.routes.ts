@@ -11,7 +11,7 @@ router.get("/ping", getApiGemini);
 
 
 // Rotas protegidas
-router.get("/protected", authenticatedUser, getPlanoAula);
+router.get("/", authenticatedUser, getPlanoAula);
 
 
 export default router;

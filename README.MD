@@ -1,4 +1,4 @@
-# PIBIOTEC - BACKEND
+# backBLOG - BACKEND
 
 ## 📖 Sobre o Projeto
 API REST desenvolvida para ........., utilizando Express.js com Prisma ORM para gerenciamento do banco de dados PostgreSQL.
@@ -44,14 +44,13 @@ API REST desenvolvida para ........., utilizando Express.js com Prisma ORM para 
     ├── 📄 compose.yml
     ├── {} package.json
     ├── {} tsconfig.json
-    ├── 🇹 middleware.ts
-    ├── 🇹 auth.ts
     ├── .env-sample
     ├── 📁 prisma/
     │   └── schema.prisma
     |   └── 🇹 seed.ts
     └── 📁 src/
         ├── 🇹 app.ts
+        ├── 🇹 auth.middleware.ts
         ├── 📁 config/
         │   |── 🇹 logs.ts
         │   |── 🇹 env.ts
@@ -64,7 +63,6 @@ API REST desenvolvida para ........., utilizando Express.js com Prisma ORM para 
         │   |── 🇹 exemple.controller.test.ts
         |   |── 🇹 exemple.controller.ts
         |   └── 🇹 exemple.routes.ts  
-        |
         ├── 📁 lib/
         │   └── 🇹 db.ts
 
@@ -169,6 +167,8 @@ docker compose --env-file .env.prod -f compose.prod.yml up -d
 ```
 > As configurações faram todo o trabalho para rodar em modo detalhado: so retirar a flag -d
 
+> já para finalizar o serviço utiliza-se a flag -f com o nome do compose rodado por exemplo: `docker compose -f compose.dev.yml down`
+
 3. Visualize o funcionamento da API:
 ```
 http://localhost:4000/
@@ -184,8 +184,10 @@ http://localhost:4000/docs
 
 ### Posts
 
-- - `GET /docs` - Documentação usando o swagger Openai 3.0
-- `GET /genAi/` - Lista planos de aula (autenticado)
+- `GET /docs` - Documentação usando o swagger Openai 3.0
+- `Auth /auth/signin` - Login Utilizando o Auth.js
+- `Auth /auth/signout`- Logout Utilizando o Auth.js
+- `GET /genAi/` - Lista planos de aula (Rota Projetida)
 - `GET genAi/ping/` - Testa conexão com a generativeAI
 
 ## ⚙️ Configurações
@@ -203,3 +205,16 @@ http://localhost:4000/docs
 ### Logs
 - Morgan para logging de requisições
 - Diferentes modos de log (development/production)
+
+
+## ⚠️ Avisos para Devs
+
+Abaixo, confira as recomendações e orientações importantes para os desenvolvedores que farão parte do projeto:
+
+- 📄 **Documentação para Devs:** Informações detalhadas configuração do ambiente e documentação com swagger.
+
+Acesse a [Documentação para Devs](/docs/DOCS.MD) para mais detalhes.
+
+
+
+

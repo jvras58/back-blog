@@ -14,8 +14,9 @@
     "db:clear": "prisma migrate reset -f",
     "db:push": "prisma db push --force-reset --accept-data-loss",
     "db:studio": "prisma studio",
+    "push": "prisma db push",
     "postinstall": "prisma generate",
-    "migrate": "prisma migrate",
+    "migrate": "prisma migrate dev",
     "migrate-deploy": "prisma migrate deploy",
     "seed": "node prisma/seed.ts"
   },
